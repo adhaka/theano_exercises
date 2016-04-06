@@ -39,7 +39,7 @@ def partial_max(a):
 if __name__ == "__main__":
     a = make_tensor(3)
     b = make_tensor(4)
-    c = broadcasted_add(a, b)
+    # c = broadcasted_add(a, b)
     d = partial_max(c)
 
     f = function([a, b,], d)

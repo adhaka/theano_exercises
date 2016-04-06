@@ -2,7 +2,12 @@
 # python 01_function.py to see if your solution works!
 #
 import numpy as np
-raise NotImplementedError("TODO: add any other imports you need")
+import theano
+from theano import function 
+from theano import shared
+from collections import OrderedDict
+
+# raise NotImplementedError("TODO: add any other imports you need")
 
 def make_shared(shape):
     """
@@ -10,7 +15,8 @@ def make_shared(shape):
     shape.
     You can use any value you want.
     """
-    raise NotImplementedError("TODO: implement the function")
+    return theano.shared(value=np.zeros(shape))
+    # raise NotImplementedError("TODO: implement the function")
 
 def exchange_shared(a, b):
     """
@@ -18,7 +24,12 @@ def exchange_shared(a, b):
     b: a theano shared variable
     Uses get_value and set_value to swap the values stored in a and b
     """
-    raise NotImplementedError("TODO: implement the function")
+    a_value = a.get_value()
+    b_value = b.get_value()
+    b.set_value(a_value)
+    a.set_value(b_value)
+    # a_value, b_value = b_value, a_value
+    # raise NotImplementedError("TODO: implement the function")
 
 def make_exchange_func(a, b):
     """
@@ -29,7 +40,14 @@ def make_exchange_func(a, b):
     values in a and b
     f should not return anything
     """
-    raise NotImplementedError("TODO: implement the function")
+    # a,b = b,a
+    updates = OrderedDict()
+    updates[a] = b 
+    updates[b] = a
+    f = function([], updates=updates)
+    return f
+
+    # raise NotImplementedError("TODO: implement the function")
 
 
 

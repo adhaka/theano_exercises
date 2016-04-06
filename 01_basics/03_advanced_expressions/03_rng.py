@@ -2,9 +2,9 @@ import numpy as np
 
 from theano import config
 from theano import shared
+from theano.tensor.shared_randomstreams import RandomStreams
 
-raise NotImplementedError("TODO: Add any imports you need.")
-
+# raise NotImplementedError("TODO: Add any imports you need.")
 
 def bernoulli_samples(p):
     """
@@ -14,8 +14,9 @@ def bernoulli_samples(p):
        with the probability given by the corresponding element
        of p.
     """
-
-    raise NotImplementedError("TODO: implement this function.")
+    theano_rng = RandomStreams(101)
+    return theano_rng.binomial(size=p.shape, p=p, dtype=p.dtype, n=1)
+    # raise NotImplementedError("TODO: implement this function.")
 
 if __name__ == "__main__":
     p = shared(np.array(range(11), dtype=config.floatX)/10.)
