@@ -8,7 +8,15 @@ def contains_softmax(f):
     Returns True if f contains a T.nnet.Softmax op, False otherwise.
     """
 
-    raise NotImplementedError("TODO: implement this function.")
+    apps = f.maker.fgraph.apply_nodes
+
+    for app in apps:
+        if isinstance(app.op, T.nnet.Softmax):
+            print 'hii'
+            # exit()
+            return True
+    return False
+    # raise NotImplementedError("TODO: implement this function.")
 
 if __name__ == "__main__":
     X = T.matrix()

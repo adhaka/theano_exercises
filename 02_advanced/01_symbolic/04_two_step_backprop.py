@@ -1,11 +1,13 @@
 import numpy as np
-
+import theano
 from theano import config
 from theano import function
 from theano import shared
 from theano import tensor as T
+from collections import OrderedDict
 
-raise NotImplementedError("TODO: add any imports you need.")
+
+#raise NotImplementedError("TODO: add any imports you need.")
 
 num_vis = 2
 
@@ -63,8 +65,21 @@ def two_step_backprop(mlp):
             Returns the gradient of the loss on mlp.W_hid
             Should not make use of mlp.w_out at all!
     """
+    x = T.matrix()
+    y = T.vector()
+    H, y_hat = mlp.fprop(x)
+    cost = loss(y_hat, y)
+    gw, gh = T.grad(cost, [mlp.w_out, H])
+    f1 = theano.function(inputs=[x, y], outputs=[gw, gh])
 
-    raise NotImplementedError("TODO: implement this function.")
+    known_grads = OrderedDict()
+    known_grads[H] = gh
+    # updates[W] = gw
+    gw2 = T.grad(None, wrt=mlp.W_hid, known_grads=known_grads)
+    f2 = theano.function(inputs=[x,gh], outputs=gw2)
+    return f1, f2
+
+   # raise NotImplementedError("TODO: implement this function.")
 
 
 if __name__ == "__main__":

@@ -82,6 +82,7 @@ def two_step_backprop(mlp):
 
     return f1, f2
 
+
 if __name__ == "__main__":
     mlp = SimpleMLP()
     X = T.matrix()

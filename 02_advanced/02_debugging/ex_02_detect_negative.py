@@ -3,8 +3,9 @@ import numpy as np
 
 from theano import function
 from theano import tensor as T
+from theano.compile import Mode
 
-raise NotImplementedError("TODO: add any imports you need.")
+# raise NotImplementedError("TODO: add any imports you need.")
 
 class NegativeVariableError(Exception):
     pass
@@ -17,6 +18,34 @@ def get_neg_detection_mode():
     variable having a negative value during the execution of the theano
     function.
     """
+    class NegativeVariableCheckMode(Mode):
+        def __init__(self, args,):
+            super(NegativeVariableCheckMode, self).__init__()            
+
+            def _flatten(element):
+                value = []
+                if isinstance(element, [list, tuple]):
+                    for ele in element:
+                        if isinstance(ele, [list, tuple]):
+                            value.extend(ele)
+                        else:
+                            value.append(ele)
+                    return value
+                else:
+                    value.append(element)
+                    return ele
+
+            def _not_negative_check(val):
+                if val.min() < 0:
+                    raise NegativeVariableError()
+                else:
+                    return True
+
+            def main_checks():
+
+
+
+
 
     raise NotImplementedError("TODO: implement this function.")
 

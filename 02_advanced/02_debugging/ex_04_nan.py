@@ -5,13 +5,17 @@
 import numpy as np
 
 from theano import function
-from theano.printing import Print
+from theano import config
+# from theano.printing import Print
 import theano.tensor as T
+# config.compute_test_value = 'raise'
 
 X = T.matrix()
+# X.tag.test_value = np.ones((3,3), dtype=config.floatX)
 p_tilde = T.exp(X)
-p_tilde = Print('p_tilde', attrs=['min', 'max'])(p_tilde)
+# p_tilde = Print('p_tilde', attrs=['min', 'max'])(p_tilde)
 denom = p_tilde.sum(axis=1, keepdims=True)
+denom = denom.dimshuffle(0, 'x')
 p = p_tilde / denom
 
 f = function([X], p)
@@ -21,3 +25,4 @@ X = -1000. * np.ones((2, 2)).astype(X.dtype)
 output = f(X)
 
 assert np.allclose(output, 0.5 * np.ones((2, 2)))
+print 'SUCCESS!!!'

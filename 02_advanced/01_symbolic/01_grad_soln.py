@@ -12,7 +12,7 @@ def grad_sum(x, y, z):
     Returns dz / dx + dz / dy
     """
 
-    return sum(T.grad(z, [x, y]))
+    return T.sum(T.grad(z, [x, y]))
 
 
 

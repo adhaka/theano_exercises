@@ -1,8 +1,12 @@
 # Fill in the TODOs and run python 02_traverse.py to see if your solution
 # works!
 import numpy as np
+import theano
 from theano import tensor as T
-raise NotImplementedError("Add any imports you need.")
+from theano.gof import Variable
+from theano.printing import pp
+# raise NotImplementedError("Add any imports you need.")
+
 
 def arg_to_softmax(prob):
     """
@@ -15,8 +19,22 @@ def arg_to_softmax(prob):
 
     If it is, return the argument to the softmax.
     """
+    if not isinstance(prob, Variable):
+        raise TypeError()
 
-    raise NotImplementedError("Implement this function.")
+    if prob.owner is None:
+        raise TypeError()
+
+    parent = prob.owner
+    if not isinstance(parent.op, T.nnet.Softmax):
+        raise TypeError()
+
+    # chaeated here a bit ..
+    rval = parent.inputs
+    print rval, type(rval)
+    return rval[0] 
+
+    # raise NotImplementedError("Implement this function.")
 
 if __name__ == "__main__":
     x = np.ones((5, 4))
